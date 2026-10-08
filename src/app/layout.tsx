@@ -11,7 +11,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Jamboree",
+  title: "Jamboree: where musicians find each other",
   description: "Find a jam tonight, or open your door to one. Any genre, wherever, whenever.",
 };
 
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
             <Link href="/" className="flex items-baseline gap-2">
               <span className="text-xl font-bold tracking-tight">Jamboree</span>
-              <span className="text-sm text-stone-500">What key?</span>
+              <span className="hidden text-sm text-stone-500 sm:inline">Where musicians find each other.</span>
             </Link>
             <nav className="flex flex-wrap items-center gap-4">
               <Link href="/" className="text-sm font-medium hover:underline">

@@ -1,6 +1,6 @@
 # Jamboree
 
-*What key?*
+*Where musicians find each other.*
 
 Find a jam tonight, or open your door to one. Jamboree is a map of open jams happening in the next week, for any genre, from bar jazz jams to garage funk to noise circles in someone's basement. Anyone can browse and RSVP. Home hosts can post a jam without telling the whole internet where they live.
 
