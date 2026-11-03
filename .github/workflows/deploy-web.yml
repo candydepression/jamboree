@@ -37,7 +37,7 @@ jobs:
           EXPO_PUBLIC_TEST_PASSWORD: made-up-people-only-2026
       # Pages serves 404.html for unknown paths; the app's router then shows the right screen.
       - run: cp dist/index.html dist/404.html
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
