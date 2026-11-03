@@ -1,0 +1,52 @@
+# Publishes the web app to GitHub Pages whenever main changes, pointed at the TEST Supabase project.
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+name: Deploy web (test)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build:web
+        env:
+          EXPO_BASE_URL: /${{ github.event.repository.name }}
+          # Public values: the app ships them anyway, and row-level security protects the data.
+          EXPO_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://pqsczbjqninycpdailwq.supabase.co' }}
+          EXPO_PUBLIC_SUPABASE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_JQeTRwcDn2mUjan2c3CEyg_EWsS_cNq' }}
+          EXPO_PUBLIC_TEST_MODE: '1'
+          EXPO_PUBLIC_TEST_PASSWORD: made-up-people-only-2026
+      # Pages serves 404.html for unknown paths; the app's router then shows the right screen.
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
