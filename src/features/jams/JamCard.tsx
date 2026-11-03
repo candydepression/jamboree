@@ -2,10 +2,10 @@
 import { Link } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Chip, Row, Text } from '@/components/ui';
-import type { JamListing } from '@/lib/api';
 import { dateBlock, formatDay, spotsLabel } from '@/lib/format';
-import { fonts, radius, space, useColors } from '@/theme';
+import { Chip, fonts, radius, Row, space, Text, useColors } from '@/ui';
+
+import type { JamListing } from './types';
 
 export function JamCard({ jam, selected, onFocus }: { jam: JamListing; selected?: boolean; onFocus?: () => void }) {
   const c = useColors();

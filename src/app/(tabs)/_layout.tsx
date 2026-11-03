@@ -1,9 +1,9 @@
 import { Tabs } from 'expo-router';
 import Svg, { Circle, Path } from 'react-native-svg';
 
-import { useAuth } from '@/lib/auth';
-import { useNotifications } from '@/lib/api';
-import { fonts, useColors } from '@/theme';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useNotifications } from '@/features/inbox/api';
+import { fonts, useColors } from '@/ui';
 
 // Simple line icons, drawn here so the app carries no icon font.
 const ICONS: Record<string, string> = {

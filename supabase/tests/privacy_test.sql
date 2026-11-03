@@ -56,7 +56,10 @@ begin
   select count(*) into n from public.profiles;
   if n = 0 then passed := passed + 1; else failed := failed || 'anon cannot read profiles'; end if;
 
-  select count(*) into n from public.get_address(next_home);
+  begin
+    select count(*) into n from public.get_address(next_home);
+  exception when insufficient_privilege then n := 0;
+  end;
   if n = 0 then passed := passed + 1; else failed := failed || 'anon cannot see the address'; end if;
 
   select count(*) into n from public.jam_locations;
@@ -157,6 +160,9 @@ begin
   if n = 2 then passed := passed + 1; else failed := failed || 'confirmed guest reads the chat'; end if;
   insert into public.chat_messages (session_id, author_id, body) values (next_home, june, 'See you there');
   passed := passed + 1;
+  update public.chat_messages set body = 'rewritten' where session_id = next_home and author_id = maya;
+  select count(*) into n from public.chat_messages where session_id = next_home and body = 'rewritten';
+  if n = 0 then passed := passed + 1; else failed := failed || 'nobody can rewrite a chat message'; end if;
 
   reset role;
 
@@ -177,6 +183,18 @@ begin
 
   select count(*) into n from public.jams where host_id = maya;
   if n = 2 then passed := passed + 1; else failed := failed || 'host reads own jams'; end if;
+
+  -- Moving a weekly jam to Tuesdays retires the untouched Thursdays but keeps the one people RSVP'd to.
+  update public.jams set repeat_rule = 'FREQ=WEEKLY;BYDAY=TU' where id = home_jam;
+  select count(*) into n from public.browse_jams(now(), now() + interval '8 weeks') b
+    where b.jam_id = home_jam and extract(isodow from b.starts_at at time zone 'America/Los_Angeles') = 2;
+  if n >= 6 then passed := passed + 1; else failed := failed || ('moved jam gets new Tuesday dates, got ' || n); end if;
+  select count(*) into n from public.browse_jams(now(), now() + interval '8 weeks') b
+    where b.jam_id = home_jam and b.session_id <> next_home
+      and extract(isodow from b.starts_at at time zone 'America/Los_Angeles') = 4;
+  if n = 0 then passed := passed + 1; else failed := failed || ('untouched old Thursdays retired, got ' || n); end if;
+  select count(*) into n from public.browse_jams(now(), now() + interval '8 weeks') b where b.session_id = next_home;
+  if n = 1 then passed := passed + 1; else failed := failed || 'a date people RSVPd to is kept'; end if;
 
   reset role;
 

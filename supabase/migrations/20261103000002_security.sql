@@ -30,6 +30,12 @@ language sql stable security definer set search_path = '' as $$
   )
 $$;
 
+-- A date's chat takes new messages until a day after the date ends.
+create function private.chat_is_open(p_session uuid) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.jam_sessions where id = p_session and ends_at + interval '1 day' > now())
+$$;
+
 -- Can the signed-in person (or an anonymous visitor) see this jam at all?
 create function private.can_see_jam(p_jam uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
@@ -239,8 +245,7 @@ create policy "host and confirmed guests post until the day after" on public.cha
     author_id = (select auth.uid())
     and deleted_at is null
     and (private.session_host(session_id) = (select auth.uid()) or private.is_confirmed_for(session_id))
-    and exists (select 1 from public.jam_sessions s
-                where s.id = session_id and s.ends_at + interval '1 day' > now())
+    and private.chat_is_open(session_id)
   );
 create policy "authors and the host remove messages" on public.chat_messages
   for update to authenticated

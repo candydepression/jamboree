@@ -1,12 +1,12 @@
 // Going: the dates you're hosting, playing, listening at, or waiting to hear back on.
 import { View } from 'react-native';
 
-import { JamCard } from '@/components/JamCard';
-import { SignInPrompt } from '@/components/SignInPrompt';
-import { Notice, Screen, Section, Text } from '@/components/ui';
-import { useMyJams, type JamListing } from '@/lib/api';
-import { useAuth } from '@/lib/auth';
-import { space } from '@/theme';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { SignInPrompt } from '@/features/auth/SignInPrompt';
+import { useMyJams } from '@/features/jams/api';
+import { JamCard } from '@/features/jams/JamCard';
+import type { JamListing } from '@/features/jams/types';
+import { Notice, Screen, Section, space, Text } from '@/ui';
 
 export default function Going() {
   const { userId } = useAuth();

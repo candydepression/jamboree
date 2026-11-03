@@ -12,7 +12,9 @@
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "test:db": "./scripts/test-db.sh",
+    "types:db": "npx --yes supabase@2 gen types typescript --project-id pqsczbjqninycpdailwq --schema public > src/lib/database.types.ts"
   },
   "dependencies": {
     "@expo-google-fonts/ibm-plex-mono": "^0.4.1",
@@ -48,5 +50,8 @@
     "eslint-config-expo": "^58.0.4",
     "typescript": "~6.0.3",
     "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

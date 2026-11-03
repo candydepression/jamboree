@@ -21,4 +21,3 @@ export const supabase = createClient<Database>(url, key, {
   },
 });
 
-export const isTestMode = process.env.EXPO_PUBLIC_TEST_MODE === '1';

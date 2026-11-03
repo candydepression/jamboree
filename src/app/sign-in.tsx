@@ -3,11 +3,11 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { DrumKit } from '@/components/DrumKit';
-import { Button, Card, Field, Notice, Screen, Section, Text } from '@/components/ui';
-import { isTestMode, supabase } from '@/lib/supabase';
-import { TEST_PEOPLE } from '@/lib/testPeople';
-import { space } from '@/theme';
+import { sendCode, signInAsTestPerson, verifyCode } from '@/features/auth/api';
+import { TEST_PEOPLE } from '@/features/auth/testPeople';
+import { isTestMode } from '@/lib/config';
+import { Button, Card, Field, Notice, Screen, Section, space, Text } from '@/ui';
+import { DrumKit } from '@/ui/art/DrumKit';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -26,11 +26,9 @@ export default function SignIn() {
   }
 
   const done = () => (router.canGoBack() ? router.back() : router.replace('/'));
-  const sendCode = () =>
-    run(() => supabase.auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true } }), () => setSent(true));
-  const verify = () => run(() => supabase.auth.verifyOtp({ email: email.trim(), token: code.trim(), type: 'email' }), done);
-  const asTestPerson = (who: string) =>
-    run(() => supabase.auth.signInWithPassword({ email: who, password: process.env.EXPO_PUBLIC_TEST_PASSWORD ?? '' }), done);
+  const askForCode = () => run(() => sendCode(email), () => setSent(true));
+  const verify = () => run(() => verifyCode(email, code), done);
+  const asTestPerson = (who: string) => run(() => signInAsTestPerson(who), done);
 
   return (
     <Screen>
@@ -52,9 +50,9 @@ export default function SignIn() {
             autoComplete="email"
             keyboardType="email-address"
             placeholder="you@example.com"
-            onSubmitEditing={sendCode}
+            onSubmitEditing={askForCode}
           />
-          <Button title="Email me a code" onPress={sendCode} loading={busy} disabled={!email.includes('@')} />
+          <Button title="Email me a code" onPress={askForCode} loading={busy} disabled={!email.includes('@')} />
         </View>
       ) : (
         <View style={{ gap: space.md }}>

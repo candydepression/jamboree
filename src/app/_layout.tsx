@@ -8,9 +8,8 @@ import { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Loading } from '@/components/ui';
-import { AuthProvider, useAuth } from '@/lib/auth';
-import { fonts, useColors } from '@/theme';
+import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
+import { fonts, Loading, useColors } from '@/ui';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -2,10 +2,9 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { Button, Field, Notice, Row, Screen, Text } from '@/components/ui';
-import { useSaveProfile } from '@/lib/api';
-import { useAuth } from '@/lib/auth';
-import { space } from '@/theme';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useSaveProfile } from '@/features/profile/api';
+import { Button, Field, Notice, Row, Screen, space, Text } from '@/ui';
 
 export default function Onboarding() {
   const { userId } = useAuth();

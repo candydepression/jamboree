@@ -1,4 +1,4 @@
-import type { Bounds } from '@/lib/api';
+import type { Bounds } from '../types';
 
 export type MapPin = { id: string; lat: number; lng: number; label: string };
 

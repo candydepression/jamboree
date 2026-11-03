@@ -2,8 +2,7 @@
 // Until then the phone app shows the list, and the web build shows the Leaflet map.
 import { View } from 'react-native';
 
-import { Text } from '@/components/ui';
-import { radius, space, useColors } from '@/theme';
+import { radius, space, Text, useColors } from '@/ui';
 
 import type { JamMapProps } from './types';
 

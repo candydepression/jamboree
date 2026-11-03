@@ -2,21 +2,12 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { SignInPrompt } from '@/components/SignInPrompt';
-import { Avatar, Button, Card, Chip, Field, Notice, Row, Screen, Section, Segmented, Text } from '@/components/ui';
-import {
-  deleteMyAccount,
-  useMemberInvites,
-  useMyInstruments,
-  useNewMemberInvite,
-  useOptions,
-  useSaveProfile,
-  useSendFeedback,
-  type Experience,
-} from '@/lib/api';
-import { useAuth, type Profile } from '@/lib/auth';
-import { supabase } from '@/lib/supabase';
-import { space } from '@/theme';
+import { signOut } from '@/features/auth/api';
+import { useAuth, type Profile } from '@/features/auth/AuthProvider';
+import { SignInPrompt } from '@/features/auth/SignInPrompt';
+import { useOptions } from '@/features/jams/api';
+import { deleteMyAccount, useMemberInvites, useMyInstruments, useNewMemberInvite, useSaveProfile, useSendFeedback, type Experience } from '@/features/profile/api';
+import { Avatar, Button, Card, Chip, Field, Notice, Row, Screen, Section, Segmented, space, Text } from '@/ui';
 
 const LEVELS: { value: Experience; label: string }[] = [
   { value: 'just_starting', label: 'New' },
@@ -142,7 +133,7 @@ function Account() {
   const [error, setError] = useState<string | null>(null);
   return (
     <Section label="Account">
-      <Button title="Sign out" kind="secondary" onPress={() => supabase.auth.signOut()} />
+      <Button title="Sign out" kind="secondary" onPress={signOut} />
       {confirming ? (
         <Card tone="outline">
           <Text>This deletes your profile, RSVPs and jams for good. Chat messages stay as “deleted user”.</Text>

@@ -2,9 +2,8 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
-import { Avatar, Button, Card, Chip, Loading, Notice, Row, Screen, Text } from '@/components/ui';
-import { useDecide, useRequests, type JamRequest } from '@/lib/api';
-import { space } from '@/theme';
+import { useDecide, useRequests, type JamRequest } from '@/features/rsvps/api';
+import { Avatar, Button, Card, Chip, Loading, Notice, Row, Screen, space, Text } from '@/ui';
 
 const LEVELS: Record<string, string> = {
   just_starting: 'Just starting',

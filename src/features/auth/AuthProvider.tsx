@@ -3,8 +3,8 @@ import type { Session } from '@supabase/supabase-js';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
-import { supabase } from './supabase';
-import type { Tables } from './database.types';
+import type { Tables } from '@/lib/database.types';
+import { supabase } from '@/lib/supabase';
 
 export type Profile = Tables<'profiles'>;
 

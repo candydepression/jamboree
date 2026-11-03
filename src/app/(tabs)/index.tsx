@@ -2,12 +2,12 @@
 import { useMemo, useState } from 'react';
 import { Platform, View } from 'react-native';
 
-import { JamCard } from '@/components/JamCard';
-import { JamMap } from '@/components/map/JamMap';
-import { Chip, Notice, Row, Screen, Segmented, Text } from '@/components/ui';
-import { useBrowse, type Bounds, type JamListing } from '@/lib/api';
+import { useBrowse } from '@/features/jams/api';
+import { JamCard } from '@/features/jams/JamCard';
+import { JamMap } from '@/features/jams/map/JamMap';
+import type { Bounds, JamListing } from '@/features/jams/types';
 import { localDate } from '@/lib/format';
-import { space } from '@/theme';
+import { Chip, Notice, Row, Screen, Segmented, space, Text } from '@/ui';
 
 type When = 'today' | 'week' | 'month';
 const DAYS: Record<When, number> = { today: 1, week: 7, month: 28 };

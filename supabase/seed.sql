@@ -1,13 +1,13 @@
 -- Made-up people and jams for the TEST project only. Never run this on the live project.
 -- Every name, venue and address here is invented. Coordinates are inside real Seattle neighborhoods.
 --
--- The test password is not stored in the repo. Set it in the same transaction first:
---   select set_config('seed.test_password', '<password>', true);
--- and put the same value in EXPO_PUBLIC_TEST_PASSWORD for the test build.
+-- All made-up people share one test-only password (also EXPO_PUBLIC_TEST_PASSWORD in the
+-- test build, which offers "sign in as a made-up person"). Override it with
+--   select set_config('seed.test_password', '<password>', false);
 
 do $$
 declare
-  pw text := current_setting('seed.test_password', true);
+  pw text := coalesce(nullif(current_setting('seed.test_password', true), ''), 'made-up-people-only-2026');
   maya uuid := '00000000-0000-4000-a000-000000000001';
   dev  uuid := '00000000-0000-4000-a000-000000000002';
   june uuid := '00000000-0000-4000-a000-000000000003';
@@ -26,10 +26,6 @@ declare
   $f$;
   thu_730 timestamptz; wed_800 timestamptz; sun_200 timestamptz; sat_900 timestamptz;
 begin
-  if coalesce(pw, '') = '' then
-    raise exception 'Set seed.test_password first (see the top of this file)';
-  end if;
-
   execute format(next_at, 4, '19:30') into thu_730;
   execute format(next_at, 3, '20:00') into wed_800;
   execute format(next_at, 7, '14:00') into sun_200;

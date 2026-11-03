@@ -4,24 +4,14 @@ import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Linking as RNLinking, Platform, Share, View } from 'react-native';
 
-import { JamMap } from '@/components/map/JamMap';
-import { Avatar, Button, Card, Chip, Field, Loading, Notice, Row, Screen, Section, Segmented, Text } from '@/components/ui';
-import {
-  useAddress,
-  useCancelRsvp,
-  useFollowJam,
-  useInviteLink,
-  useJam,
-  usePeople,
-  useRsvp,
-  type JamDetail,
-  type RsvpRole,
-  type SessionSummary,
-} from '@/lib/api';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useAddress, useFollowJam, useInviteLink, useJam, usePeople } from '@/features/jams/api';
+import { JamMap } from '@/features/jams/map/JamMap';
+import type { JamDetail, RsvpRole, SessionSummary } from '@/features/jams/types';
+import { useCancelRsvp, useRsvp } from '@/features/rsvps/api';
 import { formatDay, formatStamp, formatTime, spotsLabel } from '@/lib/format';
 import { describeRepeat, parseRule } from '@/lib/repeat';
-import { space } from '@/theme';
+import { Avatar, Button, Card, Chip, Field, Loading, Notice, Row, Screen, Section, Segmented, space, Text } from '@/ui';
 
 export default function JamPage() {
   const { id, session } = useLocalSearchParams<{ id: string; session?: string }>();
@@ -150,7 +140,7 @@ function DateDetails({ jam: j, date }: { jam: JamDetail; date: SessionSummary })
             <Row key={p.profile_id} gap={space.md}>
               <Avatar name={p.display_name} size={36} tone={p.role === 'player' ? 'wood' : 'mauve'} />
               <Text>{p.display_name}</Text>
-              <Text variant="label">{p.role === 'player' ? 'PLAYING' : 'LISTENING'}</Text>
+              <Text variant="label">{p.is_host ? 'HOSTING' : p.role === 'player' ? 'PLAYING' : 'LISTENING'}</Text>
             </Row>
           ))}
         </Section>

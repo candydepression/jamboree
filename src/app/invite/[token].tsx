@@ -2,10 +2,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
-import { SignInPrompt } from '@/components/SignInPrompt';
-import { Loading, Notice, Screen, Text } from '@/components/ui';
-import { openInvite } from '@/lib/api';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { SignInPrompt } from '@/features/auth/SignInPrompt';
+import { openInvite } from '@/features/jams/api';
+import { Loading, Notice, Screen, Text } from '@/ui';
 
 export default function Invite() {
   const { token } = useLocalSearchParams<{ token: string }>();

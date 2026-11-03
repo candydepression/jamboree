@@ -1,12 +1,12 @@
 // Web map: Leaflet with free CARTO tiles until the Mapbox account exists.
 import 'leaflet/dist/leaflet.css';
 
-import { useEffect, useMemo } from 'react';
-import { useColorScheme, View } from 'react-native';
-import { Circle, CircleMarker, MapContainer, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet';
 import { latLngBounds } from 'leaflet';
+import { useEffect, useMemo } from 'react';
+import { Circle, CircleMarker, MapContainer, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet';
+import { useColorScheme, View } from 'react-native';
 
-import { radius, useColors } from '@/theme';
+import { radius, useColors } from '@/ui';
 
 import { FUZZ_RADIUS_METERS, SEATTLE, type JamMapProps } from './types';
 

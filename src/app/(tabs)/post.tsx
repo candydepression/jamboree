@@ -3,15 +3,17 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { SignInPrompt } from '@/components/SignInPrompt';
-import { Button, Card, Chip, Field, Notice, Row, Screen, Section, Segmented, Stepper, SwitchRow, Text } from '@/components/ui';
-import { searchPlaces, useCreateJam, useOptions, useRedeemInvite, type Place } from '@/lib/api';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { SignInPrompt } from '@/features/auth/SignInPrompt';
+import { searchPlaces, useCreateJam, useOptions } from '@/features/jams/api';
+import type { Place } from '@/features/jams/types';
+import { useRedeemInvite } from '@/features/profile/api';
+import { DEFAULT_TIMEZONE } from '@/lib/config';
 import { localDate, zonedInstant } from '@/lib/format';
 import { buildRule, describeRepeat, WEEKDAYS, weekdayOf, weekOfMonth, type Repeat, type Weekday } from '@/lib/repeat';
-import { space } from '@/theme';
+import { Button, Card, Chip, Field, Notice, Row, Screen, Section, Segmented, space, Stepper, SwitchRow, Text } from '@/ui';
 
-const TZ = 'America/Los_Angeles';
+const TZ = DEFAULT_TIMEZONE;
 const DAY_SHORT: Record<Weekday, string> = { MO: 'Mon', TU: 'Tue', WE: 'Wed', TH: 'Thu', FR: 'Fri', SA: 'Sat', SU: 'Sun' };
 
 export default function Post() {
